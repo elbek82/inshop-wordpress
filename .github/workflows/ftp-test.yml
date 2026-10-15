@@ -1,0 +1,25 @@
+
+name: Test InfinityFree FTP
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-ftp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 2
+
+    steps:
+      - name: Check FTP port
+        shell: bash
+        run: |
+          echo "Testing ftpupload.net port 21..."
+          if timeout 15 bash -c 'echo > /dev/tcp/ftpupload.net/21' 2>/dev/null; then
+            echo "FTP_PORT_OPEN"
+          else
+            echo "FTP_PORT_CLOSED_OR_TIMEOUT"
+            exit 1
+          fi
